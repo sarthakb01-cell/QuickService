@@ -529,11 +529,6 @@
   function updateAllBackButtonLabels() {
     window.updateAllBackButtonLabels();
   }
-    const text = t('back_btn', 'Back');
-    document.querySelectorAll('.btn-inner-back .bib-text').forEach(el => {
-      el.textContent = text;
-    });
-  }
 
   // Find provider in local state or global directory
   function findProviderById(id) {

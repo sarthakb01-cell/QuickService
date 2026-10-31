@@ -3857,18 +3857,19 @@ h1, h2, h3, h4, h5, h6 {
       background: rgba(28, 28, 30, 0.88);
       backdrop-filter: blur(4px);
       z-index: 1200;
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
       padding: 1.25rem;
       opacity: 0;
-      pointer-events: none;
+      pointer-events: none !important;
       transition: opacity 0.2s ease;
     }
 
     .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
+      display: flex !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
     }
 
     .modal-dialog {
@@ -4189,8 +4190,14 @@ h1, h2, h3, h4, h5, h6 {
       backdrop-filter: blur(4px);
       z-index: 1090;
       opacity: 0;
-      pointer-events: none;
+      display: none;
+      pointer-events: none !important;
       transition: opacity 0.25s ease;
+    }
+    .emergency-backdrop.active {
+      display: block;
+      opacity: 1;
+      pointer-events: auto !important;
     }
 
     .emergency-backdrop.active {
@@ -7172,11 +7179,15 @@ h1, h2, h3, h4, h5, h6 {
       z-index: 1055;
       opacity: 0;
       visibility: hidden;
+      display: none;
+      pointer-events: none !important;
       transition: opacity 0.3s ease, visibility 0.3s ease;
     }
     .assistant-backdrop.active {
       opacity: 1;
       visibility: visible;
+      display: block;
+      pointer-events: auto !important;
     }
 
     .assistant-panel {
@@ -19223,7 +19234,8 @@ h1, h2, h3, h4, h5, h6 {
             </button>
           </div>
         </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function bookAgainCabTrip(tripId) {
@@ -21929,12 +21941,14 @@ h1, h2, h3, h4, h5, h6 {
     }
 
 
-    document.addEventListener('DOMContentLoaded', () => {
-      // Initialize site language from localStorage
-      const storedLanguage = localStorage.getItem('zenserve_language') || 'en';
-      changeSiteLanguage(storedLanguage);
-      // 1. Load initial services, providers and bookings
-      // Dismiss Initial Splash Loader after ~1 second
+    function initZenServeApp() {
+      try {
+        const storedLanguage = localStorage.getItem('zenserve_language') || 'en';
+        if (typeof changeSiteLanguage === 'function') changeSiteLanguage(storedLanguage);
+      } catch (err) {
+        console.warn('Language init error:', err);
+      }
+
       const initialLoader = document.getElementById('pageInitialLoader');
       if (initialLoader) {
         setTimeout(() => {
@@ -21945,11 +21959,22 @@ h1, h2, h3, h4, h5, h6 {
         }, 950);
       }
 
-      applyTheme(getStoredTheme());
-      loadServices();
-      loadProviders('all');
-      loadBookings();
-      setupAiDropzone();
+      try {
+        if (typeof applyTheme === 'function' && typeof getStoredTheme === 'function') {
+          applyTheme(getStoredTheme());
+        }
+      } catch (err) {
+        console.warn('Theme init error:', err);
+      }
+
+      try {
+        if (typeof loadServices === 'function') loadServices();
+        if (typeof loadProviders === 'function') loadProviders('all');
+        if (typeof loadBookings === 'function') loadBookings();
+        if (typeof setupAiDropzone === 'function') setupAiDropzone();
+      } catch (err) {
+        console.warn('Data loading error:', err);
+      }
 
       // 2. Filter Bar button clicks
       if (dom.categoryFilterBar) {
@@ -22111,7 +22136,13 @@ h1, h2, h3, h4, h5, h6 {
           else window.history.back();
         }
       });
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initZenServeApp);
+    } else {
+      initZenServeApp();
+    }
   </script>
 
   <!-- =====================================================================
