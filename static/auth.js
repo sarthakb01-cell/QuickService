@@ -106,16 +106,82 @@
   // ---------------------------------------------------------------------------
   // 3. HEADER AUTH UI & PROFILE MENU WITH INSTANT MODE SWITCHING
   // ---------------------------------------------------------------------------
+  window.updateMenuThemeUI = function(theme) {
+    const curTheme = theme || document.documentElement.getAttribute('data-theme') || 'light';
+    const isDark = curTheme === 'dark';
+    const icons = document.querySelectorAll('#menuThemeIcon, .menu-theme-icon');
+    const labels = document.querySelectorAll('#menuThemeLabel, .menu-theme-label');
+    icons.forEach(el => { el.textContent = isDark ? '☀️' : '🌙'; });
+    labels.forEach(el => { el.textContent = isDark ? 'Light Mode' : 'Dark Mode'; });
+  };
+
   window.updateHeaderAuthUI = function() {
     const container = document.getElementById('headerAuthContainer');
     if (!container) return;
 
     if (!window.authState.isAuthenticated || !window.authState.user) {
       container.innerHTML = `
-        <a href="#/auth/role" class="btn-auth-header" id="btnHeaderLogin" aria-label="Login or Sign up">
-          <span class="bah-icon">👤</span>
-          <span class="bah-text">Login / Sign up</span>
-        </a>
+        <div class="user-header-profile" id="userHeaderProfile">
+          <button type="button" class="btn-auth-header" id="btnHeaderLogin" onclick="window.toggleProfileDropdown(event)" aria-expanded="false" aria-label="Login or Sign up menu">
+            <span class="bah-icon">👤</span>
+            <span class="bah-text">Login / Sign up</span>
+            <span class="user-dropdown-arrow">▾</span>
+          </button>
+          
+          <div class="profile-dropdown-menu" id="headerProfileDropdown" role="menu" aria-label="Account and Settings Menu">
+            <!-- Location Details Box -->
+            <div class="pdm-location-row">
+              <div class="pdm-loc-left">
+                <span class="pdm-loc-pin">📍</span>
+                <div>
+                  <div class="pdm-loc-city">Mohali &amp; Chandigarh</div>
+                  <div class="pdm-loc-sub">Tri-City Service Area</div>
+                </div>
+              </div>
+              <span class="pdm-loc-badge">Active</span>
+            </div>
+
+            <!-- Appearance / Theme Toggle Row -->
+            <div class="pdm-theme-row">
+              <div class="pdm-theme-left">
+                <span class="pdm-theme-icon">🎨</span>
+                <span class="pdm-theme-text">Appearance</span>
+              </div>
+              <button type="button" class="pdm-theme-toggle-btn" onclick="window.toggleSiteTheme();" id="menuThemeToggleBtn" aria-label="Toggle Theme">
+                <span id="menuThemeIcon">☀️</span>
+                <span id="menuThemeLabel">Light Mode</span>
+              </button>
+            </div>
+
+            <div class="pdm-divider"></div>
+
+            <!-- Customer Sign In Link -->
+            <a href="#/auth/customer-login" class="pdm-link-item" onclick="window.closeProfileDropdown()" role="menuitem">
+              <span class="pdm-item-emoji">🛍️</span>
+              <div class="pdm-link-text-group">
+                <span class="pdm-link-title">Customer Sign In</span>
+                <span class="pdm-link-desc">Book home services &amp; cabs</span>
+              </div>
+            </a>
+
+            <!-- Partner Portal Login Link -->
+            <a href="#/auth/partner-login" class="pdm-link-item" onclick="window.closeProfileDropdown()" role="menuitem">
+              <span class="pdm-item-emoji">💼</span>
+              <div class="pdm-link-text-group">
+                <span class="pdm-link-title">Partner Portal Login</span>
+                <span class="pdm-link-desc">Service providers &amp; cab drivers</span>
+              </div>
+            </a>
+
+            <div class="pdm-divider"></div>
+
+            <!-- Create New Account / Role Chooser -->
+            <a href="#/auth/role" class="pdm-link-item pdm-signup-cta" onclick="window.closeProfileDropdown()" role="menuitem">
+              <span class="pdm-item-emoji">✨</span>
+              <span class="pdm-signup-text">Choose Role &amp; Sign Up &rsaquo;</span>
+            </a>
+          </div>
+        </div>
       `;
     } else {
       const u = window.authState.user;
@@ -148,6 +214,32 @@
               </div>
             </div>
 
+            <!-- Location Details Box -->
+            <div class="pdm-location-row">
+              <div class="pdm-loc-left">
+                <span class="pdm-loc-pin">📍</span>
+                <div>
+                  <div class="pdm-loc-city">Mohali &amp; Chandigarh</div>
+                  <div class="pdm-loc-sub">Tri-City Service Area</div>
+                </div>
+              </div>
+              <span class="pdm-loc-badge">Active</span>
+            </div>
+
+            <!-- Appearance / Theme Toggle Row -->
+            <div class="pdm-theme-row">
+              <div class="pdm-theme-left">
+                <span class="pdm-theme-icon">🎨</span>
+                <span class="pdm-theme-text">Appearance</span>
+              </div>
+              <button type="button" class="pdm-theme-toggle-btn" onclick="window.toggleSiteTheme();" id="menuThemeToggleBtn" aria-label="Toggle Theme">
+                <span id="menuThemeIcon">☀️</span>
+                <span id="menuThemeLabel">Light Mode</span>
+              </button>
+            </div>
+
+            <div class="pdm-divider"></div>
+
             <!-- Instant Mode Switcher Action Option -->
             <button type="button" class="profile-menu-switch-btn ${isPartner ? 'switch-to-customer' : 'switch-to-partner'}" onclick="window.switchUserMode('${switchTarget}')" role="menuitem">
               <span class="pms-icon">🔄</span>
@@ -160,23 +252,27 @@
 
             <!-- Navigation Links -->
             <a href="${dashboardHash}" class="pdm-link-item" onclick="window.closeProfileDropdown()" role="menuitem">
-              <span>📊</span>
+              <span class="pdm-item-emoji">📊</span>
               <span>${roleLabel} Dashboard</span>
             </a>
             <a href="${dashboardHash}" class="pdm-link-item" onclick="window.closeProfileDropdown(); setTimeout(() => { if (typeof switchCustomerTab === 'function') switchCustomerTab('profile'); if (typeof switchPartnerTab === 'function') switchPartnerTab('profile'); }, 120);" role="menuitem">
-              <span>⚙️</span>
+              <span class="pdm-item-emoji">⚙️</span>
               <span>Profile &amp; Settings</span>
             </a>
 
             <div class="pdm-divider"></div>
 
             <button type="button" class="pdm-link-item pdm-logout-item" onclick="window.closeProfileDropdown(); window.logout(true);" role="menuitem">
-              <span>⎋</span>
+              <span class="pdm-item-emoji">⎋</span>
               <span>Log Out</span>
             </button>
           </div>
         </div>
       `;
+    }
+
+    if (typeof window.updateMenuThemeUI === 'function') {
+      window.updateMenuThemeUI();
     }
   };
 
@@ -186,7 +282,7 @@
       e.stopPropagation();
     }
     const dropdown = document.getElementById('headerProfileDropdown');
-    const toggleBtn = document.getElementById('btnHeaderProfileToggle');
+    const toggleBtn = document.getElementById('btnHeaderProfileToggle') || document.getElementById('btnHeaderLogin');
     if (!dropdown) return;
     const isShowing = dropdown.classList.contains('active');
     if (isShowing) {
@@ -194,6 +290,9 @@
     } else {
       dropdown.classList.add('active');
       if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'true');
+      if (typeof window.updateMenuThemeUI === 'function') {
+        window.updateMenuThemeUI();
+      }
     }
   };
 

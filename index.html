@@ -7084,6 +7084,299 @@ h1, h2, h3, h4, h5, h6 {
       font-family: 'Space Grotesk', 'Noto Sans Devanagari', 'Noto Sans Gurmukhi', 'Inter', sans-serif;
     }
 
+    
+    /* --- REFINED NAVIGATION & MORE MENU STYLES --- */
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .nav-link {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+      padding: 0.4rem 0.75rem;
+      border: 1.5px solid transparent;
+      border-radius: var(--radius-full, 999px);
+      transition: var(--transition);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    .nav-link:hover {
+      background: var(--surface-2);
+      border-color: var(--border);
+    }
+    .btn-cab-nav {
+      background: rgba(212, 176, 74, 0.12);
+      border: 1.5px solid rgba(212, 176, 74, 0.4);
+      color: var(--accent);
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-full, 999px);
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.2s ease;
+    }
+    .btn-cab-nav:hover {
+      background: var(--accent);
+      color: #1C1C1E;
+      border-color: var(--accent);
+    }
+
+    .nav-more-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+    .btn-nav-more {
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      color: var(--text);
+      border-radius: var(--radius-full, 999px);
+      padding: 0.4rem 0.85rem;
+      font-size: 0.88rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .btn-nav-more:hover, .btn-nav-more[aria-expanded="true"] {
+      border-color: var(--accent);
+      background: var(--surface-3);
+      color: var(--text);
+    }
+    .nav-more-arrow {
+      font-size: 0.75rem;
+      transition: transform 0.2s ease;
+    }
+    .btn-nav-more[aria-expanded="true"] .nav-more-arrow {
+      transform: rotate(180deg);
+    }
+    .nav-more-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 260px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+      padding: 0.5rem;
+      display: none;
+      flex-direction: column;
+      gap: 0.3rem;
+      z-index: 1060;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .nav-more-dropdown.active {
+      display: flex;
+      animation: fadeInDown 0.18s ease-out;
+    }
+    .nav-more-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 0.85rem;
+      border-radius: 10px;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      text-decoration: none;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+      transition: background 0.15s ease;
+    }
+    .nav-more-item:hover {
+      background: var(--surface-2);
+    }
+    .nav-more-providers-fallback {
+      display: none;
+    }
+    .nmi-icon {
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+    .nmi-content {
+      flex: 1;
+    }
+    .nmi-title {
+      display: block;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+    .nmi-desc {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--text-soft);
+      margin-top: 0.1rem;
+    }
+
+    /* --- PROFILE MENU LOCATION & THEME ROW STYLES --- */
+    .pdm-location-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0.85rem;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm, 8px);
+      margin-bottom: 0.65rem;
+    }
+    .pdm-loc-left {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+    .pdm-loc-pin {
+      font-size: 1.15rem;
+    }
+    .pdm-loc-city {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+    .pdm-loc-sub {
+      font-size: 0.72rem;
+      color: var(--text-soft);
+    }
+    .pdm-loc-badge {
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 0.15rem 0.45rem;
+      background: rgba(34, 197, 94, 0.15);
+      color: #22C55E;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 999px;
+      text-transform: uppercase;
+    }
+    .pdm-theme-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.65rem 0.85rem;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm, 8px);
+      margin-bottom: 0.65rem;
+    }
+    .pdm-theme-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .pdm-theme-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.75rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .pdm-theme-toggle-btn:hover {
+      background: var(--accent);
+      color: #1C1C1E;
+      border-color: var(--accent);
+    }
+    .pdm-item-emoji {
+      font-size: 1.25rem;
+    }
+    .pdm-link-text-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .pdm-link-title {
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+    .pdm-link-desc {
+      font-size: 0.72rem;
+      color: var(--text-soft);
+    }
+    .pdm-signup-cta {
+      background: rgba(212, 176, 74, 0.08);
+      border: 1px dashed var(--accent);
+      border-radius: var(--radius-sm, 8px);
+    }
+    .pdm-signup-text {
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* --- RESPONSIVE HEADER SIZING & NO-OVERLAP GUARDS --- */
+    @media (min-width: 1201px) {
+      .nav-inner {
+        padding-right: 380px !important;
+      }
+    }
+
+    @media (max-width: 1366px) {
+      .nav-inner {
+        padding-right: 360px !important;
+      }
+      .nav-actions {
+        gap: 0.4rem !important;
+      }
+      .nav-link {
+        padding: 0.35rem 0.65rem !important;
+        font-size: 0.85rem !important;
+      }
+      .btn-cab-nav {
+        padding: 0.35rem 0.75rem !important;
+        font-size: 0.85rem !important;
+      }
+    }
+
+    @media (max-width: 1200px) {
+      .nav-inner {
+        padding-right: 330px !important;
+      }
+      .nav-link-providers {
+        display: none !important;
+      }
+      .nav-more-providers-fallback {
+        display: flex !important;
+      }
+    }
+
+    @media (max-width: 991px) {
+      .nav-inner {
+        padding-right: 290px !important;
+      }
+      .btn-cab-nav {
+        padding: 0.35rem 0.55rem !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-inner {
+        padding-right: 0 !important;
+      }
+      .nav-actions {
+        display: none !important;
+      }
+    }
+
     /* Header Top-Right Actions Group (Language Selector + SOS Button) */
     .header-top-right-actions {
       position: fixed;
@@ -11279,10 +11572,7 @@ h1, h2, h3, h4, h5, h6 {
       </a>
     </div>
 
-    <!-- Theme Toggle (Light / Dark Mode) -->
-    <button type="button" id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleSiteTheme()" aria-label="Toggle Theme" title="Toggle Light/Dark Theme">
-      ☀️
-    </button>
+
 
     <button 
       type="button" 
@@ -11306,23 +11596,47 @@ h1, h2, h3, h4, h5, h6 {
         </picture>
         <div class="brand-title-box">
           <div class="brand-title"><span class="logo-text-zen">Zen</span><span class="logo-text-serve">Serve</span></div>
-          <span class="city-badge">📍 Mohali &amp; Chandigarh</span>
         </div>
       </a>
 
       <nav class="nav-actions">
         <a href="#/" class="nav-link" data-i18n="nav_services">Services</a>
-        <a href="#/" class="nav-link" data-i18n="nav_providers">Providers</a>
+        <a href="#/" class="nav-link nav-link-providers" data-i18n="nav_providers">Providers</a>
         <button type="button" id="navCabBtn" class="btn-cab-nav" onclick="openCabBookingSection()">
           <span data-i18n="nav_book_cab">🚖 Book Cab</span>
         </button>
-        <button type="button" id="navAiEstimateBtn" class="btn-ai-nav" onclick="openAiEstimateModal()" title="AI Estimate">
-          <span data-i18n="nav_ai_estimate">⚡ AI Estimate</span>
-        </button>
-        <button type="button" id="navMyBookingsBtn" class="btn-bookings" aria-label="View My Bookings">
-          <span data-i18n="nav_my_bookings">📅 Bookings</span>
-          <span class="booking-counter-pill" id="bookingNavCount">1</span>
-        </button>
+
+        <!-- More Nav Items Dropdown Menu -->
+        <div class="nav-more-wrapper" id="navMoreWrapper">
+          <button type="button" class="btn-nav-more" id="btnNavMore" onclick="window.toggleNavMoreMenu(event)" aria-expanded="false" aria-haspopup="true" aria-label="More navigation links">
+            <span>More</span>
+            <span class="nav-more-arrow">▾</span>
+          </button>
+          <div class="nav-more-dropdown" id="navMoreDropdown" role="menu">
+            <button type="button" id="navAiEstimateBtn" class="nav-more-item" onclick="window.closeNavMoreMenu(); openAiEstimateModal();" role="menuitem">
+              <span class="nmi-icon">⚡</span>
+              <div class="nmi-content">
+                <span class="nmi-title" data-i18n="nav_ai_estimate">AI Estimate</span>
+                <span class="nmi-desc">Instant cost calculator</span>
+              </div>
+            </button>
+            <button type="button" id="navMyBookingsBtn" class="nav-more-item" onclick="window.closeNavMoreMenu(); window.openMyBookingsFromNav();" role="menuitem">
+              <span class="nmi-icon">📅</span>
+              <div class="nmi-content">
+                <span class="nmi-title" data-i18n="nav_my_bookings">My Bookings</span>
+                <span class="nmi-desc">Past &amp; upcoming jobs</span>
+              </div>
+              <span class="booking-counter-pill" id="bookingNavCount">1</span>
+            </button>
+            <a href="#/" class="nav-more-item nav-more-providers-fallback" onclick="window.closeNavMoreMenu();" role="menuitem">
+              <span class="nmi-icon">👥</span>
+              <div class="nmi-content">
+                <span class="nmi-title" data-i18n="nav_providers">Verified Pros</span>
+                <span class="nmi-desc">Browse local specialists</span>
+              </div>
+            </a>
+          </div>
+        </div>
       </nav>
     </div>
   </header>
@@ -21941,6 +22255,45 @@ h1, h2, h3, h4, h5, h6 {
     }
 
 
+    
+    // More Nav Dropdown Menu Handlers
+    window.toggleNavMoreMenu = function(e) {
+      if (e) { e.preventDefault(); e.stopPropagation(); }
+      const dd = document.getElementById('navMoreDropdown');
+      const btn = document.getElementById('btnNavMore');
+      if (!dd) return;
+      const isAct = dd.classList.contains('active');
+      if (isAct) {
+        window.closeNavMoreMenu();
+      } else {
+        dd.classList.add('active');
+        if (btn) btn.setAttribute('aria-expanded', 'true');
+      }
+    };
+    window.closeNavMoreMenu = function() {
+      const dd = document.getElementById('navMoreDropdown');
+      const btn = document.getElementById('btnNavMore');
+      if (dd) dd.classList.remove('active');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    };
+    window.openMyBookingsFromNav = function() {
+      if (window.authState && window.authState.isAuthenticated) {
+        if (window.authState.role === 'partner') {
+          window.location.hash = '#/partner';
+        } else {
+          window.location.hash = '#/customer';
+        }
+      } else {
+        window.location.hash = '#/auth/customer-login';
+      }
+    };
+    document.addEventListener('click', function(e) {
+      const wrap = document.getElementById('navMoreWrapper');
+      if (wrap && !wrap.contains(e.target)) {
+        window.closeNavMoreMenu();
+      }
+    });
+
     function initZenServeApp() {
       try {
         const storedLanguage = localStorage.getItem('zenserve_language') || 'en';
@@ -22256,6 +22609,9 @@ h1, h2, h3, h4, h5, h6 {
         document.documentElement.setAttribute('data-theme', next);
         try { localStorage.setItem('zenserve_theme', next); } catch(e) {}
         updateThemeIcon(next);
+        if (typeof window.updateMenuThemeUI === 'function') {
+          window.updateMenuThemeUI(next);
+        }
       };
 
       function updateThemeIcon(theme) {
