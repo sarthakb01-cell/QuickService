@@ -357,7 +357,26 @@ h1, h2, h3, h4, h5, h6 {
   gap: 1.5rem;
 }
 
-.nav-link {
+button.nav-link {
+      background: transparent;
+      border: 1.5px solid transparent;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+      padding: 0.4rem 0.75rem;
+      border-radius: var(--radius-full, 999px);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      transition: var(--transition);
+      user-select: none;
+    }
+    button.nav-link:hover {
+      background: var(--surface-2);
+      border-color: var(--border);
+    }
+    .nav-link {
   color: var(--text-soft);
   text-decoration: none;
   font-size: 0.88rem;
@@ -11600,9 +11619,13 @@ h1, h2, h3, h4, h5, h6 {
       </a>
 
       <nav class="nav-actions">
-        <a href="#/" class="nav-link" data-i18n="nav_services">Services</a>
-        <a href="#/" class="nav-link nav-link-providers" data-i18n="nav_providers">Providers</a>
-        <button type="button" id="navCabBtn" class="btn-cab-nav" onclick="openCabBookingSection()">
+        <button type="button" class="nav-link" id="navServicesBtn" onclick="window.navigateToServices(event)" data-i18n="nav_services">
+          Services
+        </button>
+        <button type="button" class="nav-link nav-link-providers" id="navProvidersBtn" onclick="window.navigateToProviders(event)" data-i18n="nav_providers">
+          Providers
+        </button>
+        <button type="button" id="navCabBtn" class="btn-cab-nav" onclick="window.navigateToCab(event)">
           <span data-i18n="nav_book_cab">🚖 Book Cab</span>
         </button>
 
@@ -11628,13 +11651,13 @@ h1, h2, h3, h4, h5, h6 {
               </div>
               <span class="booking-counter-pill" id="bookingNavCount">1</span>
             </button>
-            <a href="#/" class="nav-more-item nav-more-providers-fallback" onclick="window.closeNavMoreMenu();" role="menuitem">
+            <button type="button" class="nav-more-item nav-more-providers-fallback" onclick="window.closeNavMoreMenu(); window.navigateToProviders(event);" role="menuitem">
               <span class="nmi-icon">👥</span>
               <div class="nmi-content">
                 <span class="nmi-title" data-i18n="nav_providers">Verified Pros</span>
                 <span class="nmi-desc">Browse local specialists</span>
               </div>
-            </a>
+            </button>
           </div>
         </div>
       </nav>
@@ -17144,11 +17167,19 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     function openCabBookingSection() {
+      if (window.location.hash !== '#/cab') {
+        window.location.hash = '#/cab';
+      }
+      const view = document.getElementById('viewCabBooking');
+      if (view) {
+        view.style.display = 'block';
+        view.classList.add('active');
+      }
       const section = document.getElementById('cabBookingSection');
       if (section) {
         section.style.display = 'block';
         section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        updateMyTripsCountBadge();
+        if (typeof updateMyTripsCountBadge === 'function') updateMyTripsCountBadge();
         if (document.getElementById('cabBookingFormView') && document.getElementById('cabBookingFormView').style.display !== 'none') {
           setTimeout(() => {
             const input = document.getElementById('cabPickupInput');
@@ -17157,6 +17188,8 @@ h1, h2, h3, h4, h5, h6 {
         }
       }
     }
+    window.openCabBookingSection = openCabBookingSection;
+    window.navigateToCab = openCabBookingSection;
 
     function closeCabBookingSection() {
       clearCabTimers();
@@ -22257,6 +22290,36 @@ h1, h2, h3, h4, h5, h6 {
 
     
     // More Nav Dropdown Menu Handlers
+        // --- NAVIGATION HELPER FUNCTIONS FOR HEADER OPTIONS ---
+    window.navigateToServices = function(e) {
+      if (e) e.preventDefault();
+      const currentHash = window.location.hash || '';
+      if (currentHash !== '#/' && currentHash !== '' && currentHash !== '#' && currentHash !== '#/services') {
+        window.location.hash = '#/';
+        setTimeout(() => {
+          const el = document.getElementById('servicesSection') || document.getElementById('servicesContainer');
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
+      } else {
+        const el = document.getElementById('servicesSection') || document.getElementById('servicesContainer');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+
+    window.navigateToProviders = function(e) {
+      if (e) e.preventDefault();
+      window.location.hash = '#/service/electrician';
+      setTimeout(() => {
+        const grid = document.getElementById('serviceProvidersGrid');
+        if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 150);
+    };
+
+    window.navigateToCab = function(e) {
+      if (e) e.preventDefault();
+      window.location.hash = '#/cab';
+    };
+
     window.toggleNavMoreMenu = function(e) {
       if (e) { e.preventDefault(); e.stopPropagation(); }
       const dd = document.getElementById('navMoreDropdown');

@@ -407,6 +407,25 @@
       return;
     }
 
+    if (hash === 'services' || hash === 'service') {
+      window.routerState.previousRoute = window.routerState.currentRoute;
+      window.routerState.currentRoute = 'services';
+      showView('viewHome');
+      document.title = 'Our Services - ZenServe';
+      setTimeout(() => {
+        const sec = document.getElementById('servicesSection') || document.getElementById('servicesContainer');
+        if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+      return;
+    }
+
+    if (hash === 'providers' || hash === 'pros') {
+      window.routerState.previousRoute = window.routerState.currentRoute;
+      window.routerState.currentRoute = 'service-electrician';
+      renderServicePage('electrician');
+      return;
+    }
+
     if (!hash || hash === 'home') {
       // HOME PAGE
       window.routerState.previousRoute = window.routerState.currentRoute;
