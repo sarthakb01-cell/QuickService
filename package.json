@@ -1,0 +1,11 @@
+{
+  "name": "zenserve",
+  "version": "1.0.0",
+  "description": "ZenServe - All-in-One Home & Local Services Platform for Mohali & Chandigarh",
+  "scripts": {
+    "start": "python app.py",
+    "dev": "python app.py"
+  },
+  "author": "ZenServe",
+  "license": "ISC"
+}

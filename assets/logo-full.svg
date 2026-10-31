@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 280" width="1100" height="280">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;800;900&amp;display=swap');
+      .zen-icon-text {
+        font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-weight: 800;
+        font-size: 76px;
+        fill: #FFD400;
+        text-anchor: middle;
+        dominant-baseline: central;
+      }
+      .wordmark {
+        font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-weight: 800;
+        font-size: 96px;
+        letter-spacing: -1.5px;
+        dominant-baseline: central;
+      }
+      .tagline {
+        font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-weight: 600;
+        font-size: 32px;
+        fill: #E6C200;
+        letter-spacing: 0.5px;
+      }
+    </style>
+  </defs>
+  
+  <!-- Icon on left -->
+  <g transform="translate(20, 25)">
+    <rect x="0" y="0" width="230" height="230" rx="52" fill="#0A0A0A" stroke="#FFD400" stroke-width="6"/>
+    <circle cx="115" cy="115" r="82" fill="none" stroke="#FFD400" stroke-width="5" stroke-linecap="round" stroke-dasharray="5 11"/>
+    <text x="115" y="117" class="zen-icon-text">Zen</text>
+  </g>
+  
+  <!-- Text on right -->
+  <g transform="translate(285, 0)">
+    <text x="0" y="115" class="wordmark">
+      <tspan fill="#FFD400">Zen</tspan><tspan fill="#FFFFFF">Serve</tspan>
+    </text>
+    <text x="4" y="185" class="tagline">All services, one app</text>
+  </g>
+</svg>

@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZenServe Admin Portal - Verification &amp; Bookings</title>
+  <link rel="icon" type="image/svg+xml" href="static/favicon.svg">
+  <style>
+    :root {
+      --bg: #0F172A;
+      --surface: #1E293B;
+      --surface-2: #334155;
+      --border: #334155;
+      --text: #F8FAFC;
+      --text-soft: #94A3B8;
+      --accent: #E0BC4F;
+      --sky: #38BDF8;
+      --emerald: #10B981;
+      --rose: #F43F5E;
+      --amber: #F59E0B;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font); }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; line-height: 1.5; }
+
+    /* Top Navigation Bar */
+    .admin-nav {
+      background: #020617;
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #FFFFFF;
+      text-decoration: none;
+    }
+
+    .admin-badge {
+      background: rgba(224, 188, 79, 0.2);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-link {
+      color: var(--text-soft);
+      text-decoration: none;
+      font-size: 0.86rem;
+      font-weight: 600;
+      transition: color 0.15s;
+    }
+    .nav-link:hover { color: var(--text); }
+
+    .btn-sm-logout {
+      background: transparent;
+      border: 1px solid #475569;
+      color: var(--rose);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-sm-logout:hover { background: rgba(244, 63, 94, 0.1); border-color: var(--rose); }
+
+    /* Layout Containers */
+    .container { max-width: 1280px; margin: 0 auto; padding: 1.5rem; }
+
+    /* Login Box */
+    .admin-login-box {
+      max-width: 420px;
+      margin: 5rem auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
+    .alb-header { text-align: center; margin-bottom: 1.5rem; }
+    .alb-header h1 { font-size: 1.45rem; font-weight: 700; margin-bottom: 0.35rem; }
+    .alb-header p { color: var(--text-soft); font-size: 0.88rem; }
+
+    .form-group { margin-bottom: 1.15rem; }
+    .form-label { display: block; font-size: 0.82rem; font-weight: 700; color: #CBD5E1; margin-bottom: 0.4rem; }
+    .form-input {
+      width: 100%;
+      background: #020617;
+      border: 1px solid #475569;
+      color: #FFFFFF;
+      padding: 0.65rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.92rem;
+      outline: none;
+    }
+    .form-input:focus { border-color: var(--accent); }
+
+    .btn-primary-admin {
+      width: 100%;
+      background: var(--accent);
+      color: #020617;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn-primary-admin:hover { opacity: 0.9; }
+
+    .demo-pill-btn {
+      width: 100%;
+      background: #020617;
+      border: 1px dashed var(--accent);
+      color: var(--accent);
+      padding: 0.5rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 1.25rem;
+    }
+    .demo-pill-btn:hover { background: rgba(224, 188, 79, 0.1); }
+
+    .alert-banner {
+      background: rgba(244, 63, 94, 0.15);
+      border: 1px solid var(--rose);
+      color: var(--rose);
+      padding: 0.65rem;
+      border-radius: 6px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    /* Counters / Metric Cards */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 800px) { .metric-grid { grid-template-columns: 1fr; } }
+
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+    }
+    .mc-title { font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--text-soft); }
+    .mc-number { font-size: 2.25rem; font-weight: 900; color: #FFFFFF; margin: 0.35rem 0; }
+    .mc-sub { font-size: 0.82rem; color: var(--text-soft); display: flex; gap: 0.65rem; }
+
+    /* Tables */
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+    .sc-header {
+      padding: 1rem 1.25rem;
+      background: #020617;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .sc-title { font-size: 1.05rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; }
+
+    .table-responsive { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem; }
+    th {
+      background: #0B1120;
+      color: var(--text-soft);
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #1E293B;
+      color: #CBD5E1;
+      vertical-align: middle;
+    }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+    /* Status Pills */
+    .status-badge {
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .badge-approved { background: rgba(16, 185, 129, 0.15); color: var(--emerald); border: 1px solid var(--emerald); }
+    .badge-pending { background: rgba(245, 158, 11, 0.15); color: var(--amber); border: 1px solid var(--amber); }
+    .badge-rejected { background: rgba(244, 63, 94, 0.15); color: var(--rose); border: 1px solid var(--rose); }
+
+    /* Table Actions */
+    .btn-action-approve {
+      background: var(--emerald);
+      color: #020617;
+      border: none;
+      padding: 0.35rem 0.65rem;
+      border-radius: 4px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-right: 0.35rem;
+    }
+    .btn-action-reject {
+      background: transparent;
+      border: 1px solid var(--rose);
+      color: var(--rose);
+      padding: 0.35rem 0.65rem;
+      border-radius: 4px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .btn-action-approve:hover { opacity: 0.9; }
+    .btn-action-reject:hover { background: rgba(244, 63, 94, 0.1); }
+
+    .filter-tabs { display: flex; gap: 0.35rem; }
+    .tab-btn {
+      background: transparent;
+      border: 1px solid #475569;
+      color: var(--text-soft);
+      padding: 0.35rem 0.7rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background: var(--accent);
+      color: #020617;
+      border-color: var(--accent);
+    }
+
+    .doc-snippet {
+      font-size: 0.76rem;
+      color: var(--text-soft);
+      line-height: 1.4;
+    }
+    .doc-snippet strong { color: #E2E8F0; }
+
+    /* Toast Notification */
+    #adminToast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--emerald);
+      color: #020617;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      display: none;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="admin-nav">
+    <div style="display:flex; align-items:center; gap:0.75rem;">
+      <a href="/" class="brand-title">
+        <span>⚡ ZenServe</span>
+      </a>
+      <span class="admin-badge">Admin Portal</span>
+    </div>
+
+    <div class="nav-actions">
+      <a href="/" class="nav-link">← Back to Site</a>
+      <button type="button" id="btnAdminLogout" class="btn-sm-logout" style="display:none;" onclick="handleAdminLogout()">
+        ⎋ Logout
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="container">
+
+    <!-- 1. LOGIN SCREEN (Visible if unauthenticated) -->
+    <div id="adminLoginSection" class="admin-login-box" style="display:none;">
+      <div class="alb-header">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🛡️</div>
+        <h1>Administrator Access</h1>
+        <p>Restricted to ZenServe operations and verification team</p>
+      </div>
+
+      <button type="button" class="demo-pill-btn" onclick="fillAdminDemoCredentials()">
+        ⚡ Auto-Fill Demo Admin (admin@zenserve.in / Admin@1234)
+      </button>
+
+      <div id="adminLoginError" class="alert-banner" style="display:none;"></div>
+
+      <form id="adminLoginForm" onsubmit="handleAdminLoginSubmit(event)">
+        <div class="form-group">
+          <label class="form-label" for="adminIdentifier">Admin Username or Email</label>
+          <input type="text" id="adminIdentifier" class="form-input" placeholder="e.g. admin@zenserve.in" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="adminPassword">Master Password</label>
+          <input type="password" id="adminPassword" class="form-input" placeholder="Enter password" required autocomplete="current-password">
+        </div>
+        <button type="submit" id="btnAdminLoginSubmit" class="btn-primary-admin">
+          Sign In to Admin Portal
+        </button>
+      </form>
+    </div>
+
+    <!-- 2. DASHBOARD VIEW (Visible once authenticated) -->
+    <div id="adminDashboardSection" style="display:none;">
+      
+      <!-- Summary Counts Bar -->
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="mc-title">👥 Total Customers</div>
+          <div class="mc-number" id="countCustomers">0</div>
+          <div class="mc-sub">Registered service users across Mohali &amp; Chandigarh</div>
+        </div>
+        <div class="metric-card">
+          <div class="mc-title">🛠️ Service Partners</div>
+          <div class="mc-number" id="countPartners">0</div>
+          <div class="mc-sub">
+            <span>🟢 <strong id="countApprovedPartners">0</strong> Approved</span>
+            <span>⏳ <strong id="countPendingPartners" style="color:var(--amber);">0</strong> Pending</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="mc-title">📅 System Bookings</div>
+          <div class="mc-number" id="countBookings">0</div>
+          <div class="mc-sub">
+            <span>Completed: <strong id="countCompletedBookings">0</strong></span>
+            <span>Pending: <strong id="countPendingBookings" style="color:var(--amber);">0</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION: PARTNER VERIFICATION QUEUE -->
+      <div class="section-card">
+        <div class="sc-header">
+          <div class="sc-title">
+            <span>🛡️ Partner Verification Queue</span>
+            <span id="pendingBadgeCount" class="status-badge badge-pending">0 Pending</span>
+          </div>
+          <button type="button" class="tab-btn" onclick="fetchAdminData()">🔄 Refresh</button>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Partner Name &amp; Contact</th>
+                <th>Category &amp; Area</th>
+                <th>Experience &amp; Rates</th>
+                <th>Submitted Verification Docs</th>
+                <th>Status</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="partnerTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SECTION: ALL BOOKINGS -->
+      <div class="section-card">
+        <div class="sc-header">
+          <div class="sc-title">
+            <span>📋 All System Bookings</span>
+          </div>
+          <div class="filter-tabs">
+            <button type="button" class="tab-btn active" data-filter="all" onclick="filterBookingsTable('all', this)">All</button>
+            <button type="button" class="tab-btn" data-filter="pending" onclick="filterBookingsTable('pending', this)">Pending</button>
+            <button type="button" class="tab-btn" data-filter="accepted" onclick="filterBookingsTable('accepted', this)">Accepted</button>
+            <button type="button" class="tab-btn" data-filter="completed" onclick="filterBookingsTable('completed', this)">Completed</button>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Booking ID</th>
+                <th>Customer</th>
+                <th>Service &amp; Time</th>
+                <th>Address</th>
+                <th>Price</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="bookingTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <div id="adminToast">Action completed!</div>
+
+  <script>
+    let allBookingsCache = [];
+
+    // Pre-fill demo admin credentials
+    function fillAdminDemoCredentials() {
+      document.getElementById('adminIdentifier').value = 'admin@zenserve.in';
+      document.getElementById('adminPassword').value = 'Admin@1234';
+      document.getElementById('adminLoginError').style.display = 'none';
+    }
+
+    // Handle Admin Login
+    async function handleAdminLoginSubmit(e) {
+      e.preventDefault();
+      const identifier = document.getElementById('adminIdentifier').value.trim();
+      const password = document.getElementById('adminPassword').value;
+      const errBox = document.getElementById('adminLoginError');
+      const btn = document.getElementById('btnAdminLoginSubmit');
+
+      errBox.style.display = 'none';
+      btn.disabled = true;
+      btn.textContent = 'Authenticating...';
+
+      try {
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier, password })
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || 'Authentication failed');
+        }
+        showToast('✓ Welcome, Administrator!');
+        initAdminView();
+      } catch (err) {
+        errBox.textContent = err.message;
+        errBox.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Sign In to Admin Portal';
+      }
+    }
+
+    // Handle Admin Logout
+    async function handleAdminLogout() {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      document.getElementById('adminDashboardSection').style.display = 'none';
+      document.getElementById('adminLoginSection').style.display = 'block';
+      document.getElementById('btnAdminLogout').style.display = 'none';
+    }
+
+    // Fetch and render Admin Dashboard Data
+    async function fetchAdminData() {
+      try {
+        const res = await fetch('/api/admin/data');
+        if (res.status === 401 || res.status === 403) {
+          document.getElementById('adminDashboardSection').style.display = 'none';
+          document.getElementById('adminLoginSection').style.display = 'block';
+          document.getElementById('btnAdminLogout').style.display = 'none';
+          return;
+        }
+
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+
+        // Update counts
+        document.getElementById('countCustomers').textContent = data.counts.total_customers;
+        document.getElementById('countPartners').textContent = data.counts.total_partners;
+        document.getElementById('countApprovedPartners').textContent = data.counts.approved_partners;
+        document.getElementById('countPendingPartners').textContent = data.counts.pending_partners;
+        document.getElementById('countBookings').textContent = data.counts.total_bookings;
+        document.getElementById('countCompletedBookings').textContent = data.counts.completed_bookings;
+        document.getElementById('countPendingBookings').textContent = data.counts.pending_bookings;
+        document.getElementById('pendingBadgeCount').textContent = `${data.counts.pending_partners} Pending`;
+
+        // Render Partners Table
+        renderPartnersTable(data.partners);
+
+        // Cache and render Bookings Table
+        allBookingsCache = data.bookings;
+        renderBookingsTable(allBookingsCache);
+
+        document.getElementById('adminLoginSection').style.display = 'none';
+        document.getElementById('adminDashboardSection').style.display = 'block';
+        document.getElementById('btnAdminLogout').style.display = 'inline-block';
+      } catch (err) {
+        console.error("Admin load error:", err);
+      }
+    }
+
+    function renderPartnersTable(partners) {
+      const tbody = document.getElementById('partnerTableBody');
+      if (!partners.length) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-soft); padding:2rem;">No partners registered yet.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = partners.map(p => {
+        const docs = p.documents_meta || {};
+        const isPending = p.verification_status === 'pending';
+        const isApproved = p.verification_status === 'approved';
+        const statusClass = isApproved ? 'badge-approved' : (p.verification_status === 'rejected' ? 'badge-rejected' : 'badge-pending');
+
+        return `
+          <tr id="partner-row-${p.id}">
+            <td>
+              <strong style="color:#FFFFFF; font-size:0.95rem;">${p.name}</strong>
+              <div style="font-size:0.8rem; color:var(--text-soft);">📱 +91 ${p.phone}</div>
+              ${p.email ? `<div style="font-size:0.75rem; color:#64748B;">✉️ ${p.email}</div>` : ''}
+            </td>
+            <td>
+              <span style="text-transform:capitalize; color:var(--sky); font-weight:700;">${p.category || 'Service Pro'}</span>
+              <div style="font-size:0.8rem; color:var(--text-soft);">📍 ${p.area || 'Mohali & Chandigarh'}</div>
+              ${p.vehicle_plate ? `<div style="font-size:0.75rem; color:var(--accent);">🚖 ${p.vehicle_model || ''} (${p.vehicle_plate})</div>` : ''}
+            </td>
+            <td>
+              <div>${p.years_exp || 1} yrs exp &bull; ★ ${p.rating || 5.0}</div>
+              <div style="font-size:0.78rem; color:var(--text-soft);">${p.price_range || 'Standard'}</div>
+            </td>
+            <td class="doc-snippet">
+              <div>🆔 <strong>ID:</strong> ${docs.id_proof || 'Govt ID Uploaded'}</div>
+              <div>📜 <strong>Work:</strong> ${docs.work_proof || 'Trade Proof'}</div>
+              <div>🛡️ <strong>Police:</strong> ${docs.police_cert || 'Clearance Document'}</div>
+            </td>
+            <td>
+              <span class="status-badge ${statusClass}" id="status-badge-${p.id}">
+                ${p.verification_status.toUpperCase()}
+              </span>
+            </td>
+            <td style="text-align:right; white-space:nowrap;">
+              <button type="button" class="btn-action-approve" onclick="updatePartnerStatus('${p.id}', 'approved')" title="Approve Partner">
+                ✓ Approve
+              </button>
+              <button type="button" class="btn-action-reject" onclick="updatePartnerStatus('${p.id}', 'rejected')" title="Reject Partner">
+                ✕ Reject
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderBookingsTable(bookings) {
+      const tbody = document.getElementById('bookingTableBody');
+      if (!bookings.length) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-soft); padding:2rem;">No bookings found.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = bookings.map(b => {
+        const isCompleted = b.status === 'completed';
+        const isCancelled = b.status === 'cancelled';
+        const statusClass = isCompleted ? 'badge-approved' : (isCancelled ? 'badge-rejected' : 'badge-pending');
+
+        return `
+          <tr>
+            <td>
+              <strong style="color:#FFFFFF;">#${b.id}</strong>
+              <div style="font-size:0.75rem; color:var(--text-soft);">${b.booking_date}</div>
+            </td>
+            <td>
+              <strong style="color:#FFFFFF;">${b.customer_name}</strong>
+              <div style="font-size:0.8rem; color:var(--text-soft);">📱 +91 ${b.customer_phone}</div>
+            </td>
+            <td>
+              <span style="color:var(--sky); font-weight:700;">${b.service_name}</span>
+              <div style="font-size:0.78rem; color:var(--text-soft);">${b.time_slot}</div>
+              ${b.otp ? `<div style="font-size:0.75rem; color:var(--accent);">OTP: ${b.otp}</div>` : ''}
+            </td>
+            <td style="font-size:0.82rem; max-width:240px; color:var(--text-soft);">
+              ${b.customer_address}
+            </td>
+            <td style="font-weight:800; color:var(--accent);">
+              ${b.price || '₹299'}
+            </td>
+            <td>
+              <span class="status-badge ${statusClass}">
+                ${b.status.toUpperCase()}
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterBookingsTable(status, btn) {
+      document.querySelectorAll('.filter-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      if (status === 'all') {
+        renderBookingsTable(allBookingsCache);
+      } else {
+        const filtered = allBookingsCache.filter(b => b.status === status);
+        renderBookingsTable(filtered);
+      }
+    }
+
+    async function updatePartnerStatus(partnerId, newStatus) {
+      try {
+        const res = await fetch('/api/admin/partner-status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ partner_id: partnerId, status: newStatus })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast(`✓ Partner status updated to ${newStatus.toUpperCase()}`);
+          fetchAdminData();
+        } else {
+          alert(data.error || 'Update failed');
+        }
+      } catch (err) {
+        alert('Could not update partner status.');
+      }
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('adminToast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 2500);
+    }
+
+    function initAdminView() {
+      fetchAdminData();
+    }
+
+    // Auto-check on load
+    document.addEventListener('DOMContentLoaded', initAdminView);
+  </script>
+</body>
+</html>

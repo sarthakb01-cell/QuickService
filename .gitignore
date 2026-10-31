@@ -1,0 +1,41 @@
+# Environment variables (NEVER COMMIT SENSITIVE API KEYS)
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing & Scratch
+scratch/
+.pytest_cache/
+*.log
+*.db
+*.sqlite
+*.sqlite3
+
+# Operating System files
+.DS_Store
+Thumbs.db

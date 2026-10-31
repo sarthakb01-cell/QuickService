@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;800;900&amp;display=swap');
+      .zen-text {
+        font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-weight: 800;
+        font-size: 160px;
+        fill: #FFD400;
+        text-anchor: middle;
+        dominant-baseline: central;
+      }
+    </style>
+  </defs>
+  <!-- Background Rounded Square -->
+  <rect x="16" y="16" width="480" height="480" rx="108" fill="#0A0A0A" stroke="#FFD400" stroke-width="12"/>
+  <!-- Dotted Circle -->
+  <circle cx="256" cy="256" r="172" fill="none" stroke="#FFD400" stroke-width="10" stroke-linecap="round" stroke-dasharray="10 22"/>
+  <!-- Zen Text -->
+  <text x="256" y="258" class="zen-text">Zen</text>
+</svg>
